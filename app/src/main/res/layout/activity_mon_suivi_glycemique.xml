@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.matthieu.mygly.MonSuiviGlycemique">
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ajouter Valeur"
+            android:id="@+id/button7"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:onClick="addValue"
+            android:nestedScrollingEnabled="false" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/chartView"
+            android:layout_width="fill_parent"
+            android:layout_height="311dp"
+            android:layout_row="9"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:layout_columnSpan="3"></LinearLayout>
+
+        <EditText
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/GlyVal"
+            android:layout_row="5"
+            android:layout_column="1"
+            android:layout_gravity="top" />
+
+    </GridLayout>
+</RelativeLayout>
