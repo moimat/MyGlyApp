@@ -1,5 +1,7 @@
 package com.example.matthieu.mygly;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -37,6 +40,7 @@ public class MyBluetooth extends Service {
     private String SAVE_FILE = "MyglyVal.txt";
 
 
+
     // SPP UUID service - this should work for most devices
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -47,8 +51,21 @@ public class MyBluetooth extends Service {
         
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+
+
+        // prepare intent which is triggered if the
+// notification is selected
+
+
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+
+
+
 
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -180,7 +197,11 @@ public class MyBluetooth extends Service {
                                     {
                                         public void run()
                                         {
+
                                             System.out.println("gly: "+data);
+                                            if(Double.parseDouble(data)<2){
+                                                notif(Double.parseDouble(data));
+                                            }
                                             saveValue(Double.parseDouble(data));
 
                                             /*if(Result.getText().toString().equals("..")) {
@@ -193,6 +214,8 @@ public class MyBluetooth extends Service {
 	                                        	*/
 
                                         }
+
+
                                     });
                                 }
                                 else
@@ -207,6 +230,32 @@ public class MyBluetooth extends Service {
                         stopWorker = true;
                     }
                 }
+            }
+            @TargetApi(VERSION_CODES.JELLY_BEAN)
+            public  void notif(double data)
+            {
+                NotificationManager notificationManager;
+                Notification n;
+                Intent intentMSG;
+                PendingIntent pIntent;
+
+                intentMSG = new Intent(getBaseContext(),MonSuiviGlycemique.class);
+                pIntent = PendingIntent.getActivity(getBaseContext(), 0, intentMSG, 0);
+
+
+                notificationManager =(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                n  = new Notification.Builder(getBaseContext())
+                        .setContentTitle("Alerte Hypoglycémie ")
+                        .setContentText("Votre glycémie est à : "+data+" mg/L")
+                        .setSmallIcon(R.drawable.mygly_launcher)
+                        .setContentIntent(pIntent)
+                        .setAutoCancel(true).build();
+
+                notificationManager.notify(0, n);
+
+
+
             }
         });
 
@@ -238,5 +287,7 @@ public class MyBluetooth extends Service {
 
 
     }
+
+
 
 }
